@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'groupWidgt.dart';
 import 'pie.dart';
 import 'dart:html';
+import 'draw_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -45,6 +46,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
     );
 
-    return sta;
+    return Draw();
   }
 }
