@@ -16,6 +16,8 @@ import 'dart:async' show Future;
 import 'package:shelf_router/shelf_router.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
+import 'package:yaml/yaml.dart';
+import 'dart:convert';
 
 class Service {
   // The [Router] can be used to create a handler, which can be used with
@@ -82,4 +84,10 @@ void main() async {
   final service = Service();
   final server = await shelf_io.serve(service.handler, 'localhost', 8080);
   print('Server running on localhost:${server.port}');
+
+  var doc = loadYaml("YAML: YAML Ain't Markup Language");
+
+  print(doc['YAML']);
+  var config = json.encode(doc);
+  print(config);
 }
