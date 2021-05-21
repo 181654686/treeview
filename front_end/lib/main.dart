@@ -3,6 +3,7 @@ import 'groupWidgt.dart';
 import 'pie.dart';
 import 'dart:html';
 import 'draw_screen.dart';
+import 'compent/root.dart';
 
 void main() {
   runApp(MyApp());
@@ -39,13 +40,20 @@ class _MyHomePageState extends State<MyHomePage> {
       onPressed: () {},
     );
     var pie = WheelWidget();
+    var item = RootItemModel(content: "root");
+    var root = RootItemWidget(
+      itemModel: item,
+    );
     var sta = new Stack(
       children: [
         Positioned(child: gp, left: 100, top: 100),
-        Positioned(child: pie, left: 200, top: 200)
+        Positioned(child: pie, left: 200, top: 200),
+        Positioned(child: root, left: 400, top: 400)
       ],
     );
 
-    return Draw();
+    return Scaffold(
+      body: sta,
+    );
   }
 }
