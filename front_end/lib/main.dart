@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.blueGrey,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -46,8 +46,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     var sta = new Stack(
       children: [
-        Positioned(child: gp, left: 100, top: 100),
-        Positioned(child: pie, left: 200, top: 200),
+        // Positioned(child: gp, left: 100, top: 100),
+        // Positioned(child: pie, left: 200, top: 200),
         Positioned(child: root, left: 400, top: 400)
       ],
     );
