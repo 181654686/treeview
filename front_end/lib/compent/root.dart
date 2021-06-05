@@ -10,26 +10,29 @@ class RootItemWidget extends StatefulWidget {
 enum itemMode { select, edit, view, hover }
 
 class _RootItemState extends State<RootItemWidget> {
-  var mode = itemMode.view;
+  var _mode = itemMode.view;
+  var _txtControl;
+
   @override
   Widget build(BuildContext context) {
+    _txtControl = TextEditingController(text: widget.itemModel.content);
     return InkWell(
         onTap: () {
           print('--tap--');
-          mode = itemMode.select;
+          _mode = itemMode.select;
           setState(() {});
         },
         onDoubleTap: () {
-          mode = itemMode.edit;
+          _mode = itemMode.edit;
           setState(() {});
         },
         onHover: (value) {
-          print("hover" + mode.toString());
-          if (mode == itemMode.view) {
-            mode = itemMode.hover;
+          print("hover" + _mode.toString());
+          if (_mode == itemMode.view) {
+            _mode = itemMode.hover;
             setState(() {});
-          } else if (mode == itemMode.hover) {
-            mode = value ? itemMode.hover : itemMode.view;
+          } else if (_mode == itemMode.hover) {
+            _mode = value ? itemMode.hover : itemMode.view;
             setState(() {});
           }
         },
@@ -39,7 +42,7 @@ class _RootItemState extends State<RootItemWidget> {
             alignment: Alignment.center,
             padding: EdgeInsets.all(2.0),
             decoration: new BoxDecoration(
-              border: (mode != itemMode.view)
+              border: (_mode != itemMode.view)
                   ? new Border.all(width: 2.0, color: Colors.blue[100])
                   : null,
               borderRadius: new BorderRadius.all(new Radius.circular(5.0)),
@@ -48,19 +51,23 @@ class _RootItemState extends State<RootItemWidget> {
               width: 196,
               height: 56,
               decoration: new BoxDecoration(color: Colors.blue),
-              child: mode == itemMode.edit
+              child: _mode == itemMode.edit
                   ? TextField(
                       showCursor: true,
+                      cursorColor: Colors.white,
+                      cursorWidth: 3,
                       autofocus: true,
+                      controller: _txtControl,
                       textAlign: TextAlign.center,
                       onSubmitted: (value) {
-                        mode = itemMode.view;
-                        print('!!');
+                        _mode = itemMode.view;
+                        widget.itemModel.content = value;
+                        print(widget.itemModel.content);
                         setState(() {});
                       },
                       style: TextStyle(color: Colors.white, fontSize: 32),
                     )
-                  : Text("中心主题",
+                  : Text(widget.itemModel.content,
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.white, fontSize: 32)),
             )));
