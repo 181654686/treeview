@@ -16,11 +16,14 @@ class _RootItemState extends State<RootItemWidget> {
   @override
   Widget build(BuildContext context) {
     _txtControl = TextEditingController(text: widget.itemModel.content);
+
     return InkWell(
         onTap: () {
           print('--tap--');
-          _mode = itemMode.select;
-          setState(() {});
+          if (_mode == itemMode.view) {
+            _mode = itemMode.select;
+            setState(() {});
+          }
         },
         onDoubleTap: () {
           _mode = itemMode.edit;
@@ -57,6 +60,9 @@ class _RootItemState extends State<RootItemWidget> {
                       cursorColor: Colors.white,
                       cursorWidth: 3,
                       autofocus: true,
+                      onEditingComplete: () {
+                        print('onEditingComplete');
+                      },
                       controller: _txtControl,
                       textAlign: TextAlign.center,
                       onSubmitted: (value) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'groupWidgt.dart';
 import 'pie.dart';
 import 'dart:html';
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        fontFamily: 'NotoSansSC',
         primarySwatch: Colors.blueGrey,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
@@ -44,9 +46,14 @@ class _MyHomePageState extends State<MyHomePage> {
     var root = RootItemWidget(
       itemModel: item,
     );
+    var ti = TextField(
+      onSubmitted: (value) {
+        print(value);
+      },
+    );
     var sta = new Stack(
       children: [
-        // Positioned(child: gp, left: 100, top: 100),
+        Positioned(child: ti, left: 100, top: 100, width: 200, height: 60),
         // Positioned(child: pie, left: 200, top: 200),
         Positioned(child: root, left: 400, top: 400)
       ],
