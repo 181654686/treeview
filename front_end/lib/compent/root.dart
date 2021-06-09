@@ -12,7 +12,6 @@ enum itemMode { select, edit, view, hover }
 class _RootItemState extends State<RootItemWidget> {
   var _mode = itemMode.view;
   var _txtControl;
-
   @override
   Widget build(BuildContext context) {
     _txtControl = TextEditingController(text: widget.itemModel.content);
@@ -40,8 +39,8 @@ class _RootItemState extends State<RootItemWidget> {
           }
         },
         child: Container(
-            width: 200,
-            height: 60,
+            // width: _width + 4,
+            // height: _height + 4,
             alignment: Alignment.center,
             padding: EdgeInsets.all(2.0),
             decoration: new BoxDecoration(
@@ -51,31 +50,43 @@ class _RootItemState extends State<RootItemWidget> {
               borderRadius: new BorderRadius.all(new Radius.circular(5.0)),
             ),
             child: Container(
-              width: 196,
-              height: 56,
+              padding: EdgeInsets.all(2.0),
+              constraints: BoxConstraints(
+                maxHeight: 200.0,
+                minHeight: 50.0,
+                minWidth: 50.0,
+                maxWidth: 300.0,
+              ),
               decoration: new BoxDecoration(color: Colors.blue),
               child: _mode == itemMode.edit
-                  ? TextField(
-                      showCursor: true,
-                      cursorColor: Colors.white,
-                      cursorWidth: 3,
-                      autofocus: true,
-                      onEditingComplete: () {
-                        print('onEditingComplete');
-                      },
-                      controller: _txtControl,
+                  ? IntrinsicWidth(
+                      stepWidth: 60,
+                      child: TextField(
+                        showCursor: true,
+                        cursorColor: Colors.white,
+                        cursorWidth: 3,
+                        autofocus: true,
+                        maxLines: null,
+                        keyboardType: TextInputType.text,
+                        onEditingComplete: () {
+                          print('onEditingComplete');
+                        },
+                        onChanged: (value) {},
+                        controller: _txtControl,
+                        textAlign: TextAlign.center,
+                        onSubmitted: (value) {
+                          _mode = itemMode.view;
+                          widget.itemModel.content = value;
+                          print(widget.itemModel.content);
+                          setState(() {});
+                        },
+                        style: TextStyle(color: Colors.white, fontSize: 24),
+                      ))
+                  : Text(_txtControl.text,
                       textAlign: TextAlign.center,
-                      onSubmitted: (value) {
-                        _mode = itemMode.view;
-                        widget.itemModel.content = value;
-                        print(widget.itemModel.content);
-                        setState(() {});
-                      },
-                      style: TextStyle(color: Colors.white, fontSize: 32),
-                    )
-                  : Text(widget.itemModel.content,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 32)),
+                      // softWrap: true,
+                      // overflow: TextOverflow.visible,
+                      style: TextStyle(color: Colors.white, fontSize: 24)),
             )));
   }
 }
