@@ -15,8 +15,7 @@ class _RootItemState extends State<RootItemWidget> {
   @override
   Widget build(BuildContext context) {
     _txtControl = TextEditingController(text: widget.itemModel.content);
-
-    return InkWell(
+    var _ink = InkWell(
         onTap: () {
           print('--tap--');
           if (_mode == itemMode.view) {
@@ -46,7 +45,7 @@ class _RootItemState extends State<RootItemWidget> {
             decoration: new BoxDecoration(
               border: (_mode != itemMode.view)
                   ? new Border.all(width: 2.0, color: Colors.blue[100])
-                  : null,
+                  : new Border.all(width: 2.0, color: Colors.transparent),
               borderRadius: new BorderRadius.all(new Radius.circular(5.0)),
             ),
             child: Container(
@@ -88,6 +87,55 @@ class _RootItemState extends State<RootItemWidget> {
                       // overflow: TextOverflow.visible,
                       style: TextStyle(color: Colors.white, fontSize: 24)),
             )));
+    // var _btn = SizedBox(
+    //     height: 25,
+    //     width: 25,
+    //     child: RaisedButton(
+    //       child: Center(child: Text('+')),
+    //       onPressed: () {
+    //         print('我很圆');
+    //         Text('我很圆');
+    //       },
+    //       shape: CircleBorder(),
+    //     ));
+
+    // EditableText
+
+    var _btn = Container(
+      width: 30.0,
+      height: 30.0,
+      decoration: new BoxDecoration(
+        border: new Border.all(width: 2.0, color: Colors.black),
+        borderRadius: new BorderRadius.all(new Radius.circular(15)),
+      ),
+      child: Center(
+          child:
+              Text('3', style: TextStyle(color: Colors.black, fontSize: 15))),
+    );
+    var _line = Container(
+      width: 10,
+      height: 1,
+      decoration: new BoxDecoration(
+        border: new Border.all(width: 2.0, color: Colors.black),
+      ),
+    );
+    // var _row = Row(
+    //   children: [
+    //     _ink,
+    //     _line,
+    //     _btn,
+    //   ],
+    // );
+    var _stack = Stack(
+      fit: StackFit.loose,
+      overflow: Overflow.visible,
+      children: [
+        Positioned(left: 0, top: 0, child: _ink),
+        Positioned(child: _line),
+        Positioned(child: _btn),
+      ],
+    );
+    return _stack;
   }
 }
 
