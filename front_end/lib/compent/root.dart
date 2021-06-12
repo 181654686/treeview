@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'root_lint.dart';
 
 class RootItemWidget extends StatefulWidget {
   final RootItemModel itemModel;
@@ -12,10 +13,22 @@ enum itemMode { select, edit, view, hover }
 class _RootItemState extends State<RootItemWidget> {
   var _mode = itemMode.view;
   var _txtControl;
+  GlobalKey _keyInk = GlobalKey();
+
+  // Size _getSize() {
+  //   // final RenderBox renderBox = ;
+  //   // globalKey.currentContext.size
+
+  //   final sizeGreen = _keyInk.currentContext.size;
+  //   print("SIZE of green: $sizeGreen");
+  //   return sizeGreen;
+  // }
+
   @override
   Widget build(BuildContext context) {
     _txtControl = TextEditingController(text: widget.itemModel.content);
     var _ink = InkWell(
+        key: _keyInk,
         onTap: () {
           print('--tap--');
           if (_mode == itemMode.view) {
@@ -49,57 +62,46 @@ class _RootItemState extends State<RootItemWidget> {
               borderRadius: new BorderRadius.all(new Radius.circular(5.0)),
             ),
             child: Container(
-              padding: EdgeInsets.all(2.0),
-              constraints: BoxConstraints(
-                maxHeight: 200.0,
-                minHeight: 50.0,
-                minWidth: 50.0,
-                maxWidth: 300.0,
-              ),
-              decoration: new BoxDecoration(color: Colors.blue),
-              child: _mode == itemMode.edit
-                  ? IntrinsicWidth(
-                      stepWidth: 60,
-                      child: TextField(
-                        showCursor: true,
-                        cursorColor: Colors.white,
-                        cursorWidth: 3,
-                        autofocus: true,
-                        maxLines: null,
-                        keyboardType: TextInputType.text,
-                        onEditingComplete: () {
-                          print('onEditingComplete');
-                        },
-                        onChanged: (value) {},
-                        controller: _txtControl,
-                        textAlign: TextAlign.center,
-                        onSubmitted: (value) {
-                          _mode = itemMode.view;
-                          widget.itemModel.content = value;
-                          print(widget.itemModel.content);
-                          setState(() {});
-                        },
-                        style: TextStyle(color: Colors.white, fontSize: 24),
-                      ))
-                  : Text(_txtControl.text,
+                padding: EdgeInsets.all(2.0),
+                constraints: BoxConstraints(
+                  maxHeight: 200.0,
+                  minHeight: 50.0,
+                  minWidth: 100.0,
+                  maxWidth: 300.0,
+                ),
+                decoration: new BoxDecoration(
+                    border: new Border.all(
+                      width: 2.0,
+                      color: Colors.black,
+                    ),
+                    borderRadius:
+                        new BorderRadius.all(new Radius.circular(10.0)),
+                    color: Colors.grey[200]),
+                child: IntrinsicWidth(
+                    stepWidth: 60,
+                    child: TextField(
+                      showCursor: true,
+                      cursorColor: Colors.white,
+                      cursorWidth: 3,
+                      // cursorHeight: 24,
+                      autofocus: true,
+                      enabled: _mode == itemMode.edit,
+                      maxLines: null,
+                      keyboardType: TextInputType.text,
+                      onEditingComplete: () {
+                        print('onEditingComplete');
+                      },
+                      onChanged: (value) {},
+                      controller: _txtControl,
                       textAlign: TextAlign.center,
-                      // softWrap: true,
-                      // overflow: TextOverflow.visible,
-                      style: TextStyle(color: Colors.white, fontSize: 24)),
-            )));
-    // var _btn = SizedBox(
-    //     height: 25,
-    //     width: 25,
-    //     child: RaisedButton(
-    //       child: Center(child: Text('+')),
-    //       onPressed: () {
-    //         print('我很圆');
-    //         Text('我很圆');
-    //       },
-    //       shape: CircleBorder(),
-    //     ));
-
-    // EditableText
+                      onSubmitted: (value) {
+                        _mode = itemMode.view;
+                        widget.itemModel.content = value;
+                        print(widget.itemModel.content);
+                        setState(() {});
+                      },
+                      style: TextStyle(color: Colors.black, fontSize: 24),
+                    )))));
 
     var _btn = Container(
       width: 30.0,
@@ -112,27 +114,14 @@ class _RootItemState extends State<RootItemWidget> {
           child:
               Text('3', style: TextStyle(color: Colors.black, fontSize: 15))),
     );
-    var _line = Container(
-      width: 10,
-      height: 1,
-      decoration: new BoxDecoration(
-        border: new Border.all(width: 2.0, color: Colors.black),
-      ),
-    );
-    // var _row = Row(
-    //   children: [
-    //     _ink,
-    //     _line,
-    //     _btn,
-    //   ],
-    // );
-    var _stack = Stack(
-      fit: StackFit.loose,
-      overflow: Overflow.visible,
+
+    var _rootLine = RootLineWidget();
+
+    var _stack = Row(
       children: [
-        Positioned(left: 0, top: 0, child: _ink),
-        Positioned(child: _line),
-        Positioned(child: _btn),
+        _ink,
+        _rootLine,
+        _btn,
       ],
     );
     return _stack;
@@ -143,5 +132,7 @@ class _RootItemState extends State<RootItemWidget> {
 class RootItemModel {
   String content;
   String type;
-  RootItemModel({this.content, this.type});
+  int sonNumber; //number of sons
+  int status; //open,close
+  RootItemModel({this.content, this.type, this.sonNumber, this.status});
 }
