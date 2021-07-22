@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'groupWidgt.dart';
+import 'home_sc.dart';
 import 'pie.dart';
 import 'dart:html';
 import 'draw_screen.dart';
 import 'compent/root.dart';
+import 'home.dart';
 
 void main() {
+  window.document.onContextMenu.listen((evt) => evt.preventDefault());
   runApp(MyApp());
 }
 
@@ -20,7 +23,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'NotoSansSC',
         primarySwatch: Colors.blueGrey,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: HomeScreen(),
     );
   }
 }
