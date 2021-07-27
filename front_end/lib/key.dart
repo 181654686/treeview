@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:treeview/select_rect.dart';
 import 'dart:html';
 
+import 'compent/root.dart';
 import 'main_menu.dart';
 
 void main() async {
@@ -37,6 +38,10 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Shortcut Test',
+      theme: ThemeData(
+        fontFamily: 'NotoSansSC',
+        primarySwatch: Colors.blueGrey,
+      ),
       home: ShortcutTest(),
     );
   }
@@ -174,21 +179,38 @@ class _ShortcutTestState extends State<ShortcutTest> {
                         size: Size(double.maxFinite, double.maxFinite),
                         dx: end_dx,
                         dy: end_dy))),
-            Center(
-                child: Transform(
-                    transform: Matrix4.identity()
-                      ..translate(_dx, _dy)
-                      ..scale(_scale, _scale),
-                    child: Container(
-                      child: Text(
-                        'data',
-                        style: TextStyle(fontSize: 50),
-                      ),
-                    ))),
+            Positioned(
+              child: Transform(
+                  transform: Matrix4.identity()
+                    ..translate(_dx, _dy)
+                    ..scale(_scale, _scale),
+                  child: buildRoot()),
+              left: 400,
+              top: 400,
+            ),
+            // Center(
+            //     child: Transform(
+            //         transform: Matrix4.identity()
+            //           ..translate(_dx, _dy)
+            //           ..scale(_scale, _scale),
+            //         child: Container(
+            //           child: Text(
+            //             'data',
+            //             style: TextStyle(fontSize: 50),
+            //           ),
+            //         ))),
           ],
         ),
       ),
     );
+  }
+
+  Widget buildRoot() {
+    var item = RootItemModel(content: "root");
+    var root = RootItemWidget(
+      itemModel: item,
+    );
+    return root;
   }
 
   String printKeysPressed(Set<LogicalKeyboardKey> keys) {

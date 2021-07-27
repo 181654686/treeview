@@ -168,3 +168,27 @@ Transform(
 ~~~
 
 
+右键菜单
+~~~
+            Positioned(
+                left: _left_dx,
+                top: _left_dy,
+                child: Visibility(
+                  visible: _mode == mode_status.menu,
+                  child: mymenu(),
+                )),
+~~~
+
+
+选择框
+~~~
+            Positioned(
+                left: start_dx,
+                top: start_dy,
+                child: Visibility(
+                    visible: _mode == mode_status.select,
+                    child: select_rect(
+                        size: Size(double.maxFinite, double.maxFinite),
+                        dx: end_dx,
+                        dy: end_dy))),
+~~~
