@@ -8,6 +8,7 @@ import 'dart:html';
 import 'main_menu.dart';
 
 void main() async {
+  // 鼠标右键
   window.document.onContextMenu.listen((evt) => evt.preventDefault());
   window.document.onMouseWheel.listen((event) {
     if (event.ctrlKey == true) {
