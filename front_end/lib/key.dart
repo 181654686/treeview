@@ -97,6 +97,7 @@ class _ShortcutTestState extends State<ShortcutTest> {
         return null;
       },
       child: Scaffold(
+        backgroundColor: Color.fromARGB(255, 240, 244, 247),
         body: Stack(
           children: [
             Listener(
