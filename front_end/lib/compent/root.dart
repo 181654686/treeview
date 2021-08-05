@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'root_lint.dart';
 
@@ -13,16 +15,20 @@ enum itemMode { select, edit, view, hover }
 class _RootItemState extends State<RootItemWidget> {
   var _mode = itemMode.view;
   var _txtControl;
+  FocusNode _itemnode = FocusNode();
   GlobalKey _keyInk = GlobalKey();
 
-  // Size _getSize() {
-  //   // final RenderBox renderBox = ;
-  //   // globalKey.currentContext.size
-
-  //   final sizeGreen = _keyInk.currentContext.size;
-  //   print("SIZE of green: $sizeGreen");
-  //   return sizeGreen;
-  // }
+  Border buildBorder() {
+    if (_mode == itemMode.hover) {
+      return new Border.all(
+          width: 2.0, color: Color.fromARGB(0xff, 0xB4, 0x71, 0xEA));
+    } else if (_mode == itemMode.select || _mode == itemMode.edit) {
+      return new Border.all(
+          width: 2.0, color: Color.fromARGB(0xff, 0x9e, 0xad, 0xba));
+    } else {
+      return new Border.all(width: 2.0, color: Colors.transparent);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +62,7 @@ class _RootItemState extends State<RootItemWidget> {
             alignment: Alignment.center,
             padding: EdgeInsets.all(2.0),
             decoration: new BoxDecoration(
-              border: (_mode != itemMode.view)
-                  ? new Border.all(width: 2.0, color: Colors.blue[100])
-                  : new Border.all(width: 2.0, color: Colors.transparent),
+              border: buildBorder(),
               borderRadius: new BorderRadius.all(new Radius.circular(5.0)),
             ),
             child: Container(
@@ -69,17 +73,19 @@ class _RootItemState extends State<RootItemWidget> {
                   minWidth: 100.0,
                   maxWidth: 300.0,
                 ),
-                decoration: new BoxDecoration(
-                    border: new Border.all(
-                      width: 2.0,
-                      color: Colors.black,
-                    ),
-                    borderRadius:
-                        new BorderRadius.all(new Radius.circular(10.0)),
-                    color: Colors.grey[200]),
+                // decoration: new BoxDecoration(
+                //     border: new Border.all(
+                //       width: 2.0,
+                //       color: Colors.black,
+                //     ),
+                //     borderRadius:
+                //         new BorderRadius.all(new Radius.circular(10.0)),
+                //     color: Colors.grey[200]),
                 child: IntrinsicWidth(
                     stepWidth: 60,
                     child: TextField(
+                      // focusNode: FocusNode()..requestFocus(),
+                      decoration: null,
                       showCursor: true,
                       cursorColor: Colors.white,
                       cursorWidth: 3,
@@ -115,11 +121,35 @@ class _RootItemState extends State<RootItemWidget> {
               Text('3', style: TextStyle(color: Colors.black, fontSize: 15))),
     );
 
+    var editbox = GestureDetector(
+      onDoubleTap: () {
+        FocusScope.of(context).requestFocus(_itemnode);
+        // _itemnode.requestFocus();
+        print('onDoubleTap');
+      },
+      child: Container(
+        padding: EdgeInsets.all(2.0),
+        constraints: BoxConstraints(
+          maxHeight: 200.0,
+          minHeight: 50.0,
+          minWidth: 100.0,
+          maxWidth: 300.0,
+        ),
+        child: EditableText(
+            autofocus: true,
+            controller: _txtControl,
+            focusNode: _itemnode,
+            style: TextStyle(fontSize: 20),
+            cursorColor: Colors.black,
+            backgroundCursorColor: Colors.transparent),
+      ),
+    );
+
     var _rootLine = RootLineWidget();
 
     var _stack = Row(
       children: [
-        _ink,
+        editbox,
         _rootLine,
         _btn,
       ],

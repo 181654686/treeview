@@ -61,6 +61,7 @@ class _ShortcutTestState extends State<ShortcutTest> {
   @override
   void initState() {
     super.initState();
+    _rootNode.requestFocus();
   }
 
   double _left_dx = 0.0;
@@ -77,12 +78,15 @@ class _ShortcutTestState extends State<ShortcutTest> {
   String _key = '';
   menu_status _menu = menu_status.none;
   var _mode = mode_status.view;
+  TextEditingController _controller = new TextEditingController();
+  FocusNode _rootNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     double _previousScale;
 
     return RawKeyboardListener(
-      focusNode: FocusNode()..requestFocus(),
+      autofocus: false,
+      focusNode: _rootNode,
       onKey: (event) {
         print('Key Pressed: ${event.logicalKey.keyLabel}');
         if (event.runtimeType == RawKeyDownEvent) {
@@ -93,8 +97,8 @@ class _ShortcutTestState extends State<ShortcutTest> {
           _key = '';
         }
 
-        setState(() {});
-        return null;
+        // setState(() {});
+        // return null;
       },
       child: Scaffold(
         backgroundColor: Color.fromARGB(255, 240, 244, 247),
@@ -103,6 +107,7 @@ class _ShortcutTestState extends State<ShortcutTest> {
             Listener(
               onPointerDown: (event) {
                 print('onPointerDown');
+                FocusScope.of(context).requestFocus(_rootNode);
                 print(event.buttons);
                 if (event.buttons == 1) {
                   _mode = mode_status.select;
@@ -195,9 +200,12 @@ class _ShortcutTestState extends State<ShortcutTest> {
             //           ..translate(_dx, _dy)
             //           ..scale(_scale, _scale),
             //         child: Container(
-            //           child: Text(
-            //             'data',
-            //             style: TextStyle(fontSize: 50),
+            //           child: EditableText(
+            //             focusNode: FocusNode()..requestFocus(),
+            //             backgroundCursorColor: Colors.transparent,
+            //             controller: _controller,
+            //             cursorColor: Colors.black,
+            //             style: TextStyle(fontSize: 20),
             //           ),
             //         ))),
           ],

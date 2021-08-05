@@ -192,3 +192,9 @@ Transform(
                         dx: end_dx,
                         dy: end_dy))),
 ~~~
+
+focusNode
+~~~
+ focusNode: _itemnode,
+FocusScope.of(context).requestFocus(_rootNode);
+~~~
