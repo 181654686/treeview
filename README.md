@@ -198,3 +198,13 @@ focusNode
  focusNode: _itemnode,
 FocusScope.of(context).requestFocus(_rootNode);
 ~~~
+
+
+# flutter 通信
+https://www.jianshu.com/p/e201f6b764f8
+1，callback
+
+2，event bus
+
+3,flutter-redux
+https://www.jianshu.com/p/216e340ac63a?utm_campaign=maleskine
