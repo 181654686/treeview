@@ -3,10 +3,14 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:treeview/select_rect.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
+
 import 'dart:html';
 
 import 'compent/root.dart';
 import 'main_menu.dart';
+import 'model/app_state.dart';
 
 void main() async {
   // 鼠标右键
@@ -34,15 +38,20 @@ void main() async {
 }
 
 class App extends StatelessWidget {
+  final store =
+      Store<AppState>(counterReducer, initialState: AppState.initialState());
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Shortcut Test',
-      theme: ThemeData(
-        fontFamily: 'NotoSansSC',
-        primarySwatch: Colors.blueGrey,
+    return StoreProvider(
+      store: store,
+      child: MaterialApp(
+        title: 'Shortcut Test',
+        theme: ThemeData(
+          fontFamily: 'NotoSansSC',
+          primarySwatch: Colors.blueGrey,
+        ),
+        home: ShortcutTest(),
       ),
-      home: ShortcutTest(),
     );
   }
 }
@@ -194,20 +203,17 @@ class _ShortcutTestState extends State<ShortcutTest> {
               left: 400,
               top: 400,
             ),
-            // Center(
-            //     child: Transform(
-            //         transform: Matrix4.identity()
-            //           ..translate(_dx, _dy)
-            //           ..scale(_scale, _scale),
-            //         child: Container(
-            //           child: EditableText(
-            //             focusNode: FocusNode()..requestFocus(),
-            //             backgroundCursorColor: Colors.transparent,
-            //             controller: _controller,
-            //             cursorColor: Colors.black,
-            //             style: TextStyle(fontSize: 20),
-            //           ),
-            //         ))),
+            Positioned(
+              child: IconButton(
+                icon: Icon(
+                  color: Colors.black12,
+                  Icon: Icons.ac_unit,
+                  size: 20,
+                ),
+              ),
+              left: 100,
+              top: 100,
+            ),
           ],
         ),
       ),

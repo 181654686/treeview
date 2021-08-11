@@ -1,7 +1,10 @@
 import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:treeview/model/app_state.dart';
 import 'root_lint.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
 
 class RootItemWidget extends StatefulWidget {
   final RootItemModel itemModel;
@@ -110,16 +113,22 @@ class _RootItemState extends State<RootItemWidget> {
                     )))));
 
     var _btn = Container(
-      width: 30.0,
-      height: 30.0,
-      decoration: new BoxDecoration(
-        border: new Border.all(width: 2.0, color: Colors.black),
-        borderRadius: new BorderRadius.all(new Radius.circular(15)),
-      ),
-      child: Center(
-          child:
-              Text('3', style: TextStyle(color: Colors.black, fontSize: 15))),
-    );
+        width: 30.0,
+        height: 30.0,
+        decoration: new BoxDecoration(
+          border: new Border.all(width: 2.0, color: Colors.black),
+          borderRadius: new BorderRadius.all(new Radius.circular(15)),
+        ),
+        child: Center(
+          child: StoreConnector<AppState, String>(builder: (context, value) {
+            return Text(
+              '$value',
+              style: TextStyle(color: Colors.black, fontSize: 16),
+            );
+          }, converter: (Store store) {
+            return store.state.count.toString();
+          }),
+        ));
 
     var editbox = GestureDetector(
       onDoubleTap: () {
