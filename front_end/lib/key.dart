@@ -6,16 +6,17 @@ import 'package:treeview/select_rect.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
-import 'dart:html';
+import 'dart:html' as html;
 
 import 'compent/root.dart';
 import 'main_menu.dart';
 import 'model/app_state.dart';
+import 'widgets/float_menu.dart';
 
 void main() async {
   // 鼠标右键
-  window.document.onContextMenu.listen((evt) => evt.preventDefault());
-  window.document.onMouseWheel.listen((event) {
+  html.window.document.onContextMenu.listen((evt) => evt.preventDefault());
+  html.window.document.onMouseWheel.listen((event) {
     if (event.ctrlKey == true) {
       print(event);
       print('control +++++++++++');
@@ -23,7 +24,7 @@ void main() async {
       return true;
     }
   });
-  window.onKeyDown.listen((event) {
+  html.window.onKeyDown.listen((event) {
     if (event.ctrlKey == true &&
         (event.keyCode == 61 ||
             event.keyCode == 107 ||
@@ -92,6 +93,8 @@ class _ShortcutTestState extends State<ShortcutTest> {
   @override
   Widget build(BuildContext context) {
     double _previousScale;
+    double _pageWidth = MediaQuery.of(context).size.width;
+    double _pageHeight = MediaQuery.of(context).size.height;
 
     return RawKeyboardListener(
       autofocus: false,
@@ -204,16 +207,15 @@ class _ShortcutTestState extends State<ShortcutTest> {
               top: 400,
             ),
             Positioned(
-              child: IconButton(
-                icon: Icon(
-                  color: Colors.black12,
-                  Icon: Icons.ac_unit,
-                  size: 20,
-                ),
-              ),
-              left: 100,
-              top: 100,
+              child: buildleftMenu(),
+              left: 0,
+              top: 20,
             ),
+            Positioned(
+              child: buildbottomMenu(),
+              left: _pageWidth - 220,
+              top: _pageHeight - 70,
+            )
           ],
         ),
       ),
@@ -226,6 +228,44 @@ class _ShortcutTestState extends State<ShortcutTest> {
       itemModel: item,
     );
     return root;
+  }
+
+  Widget buildleftMenu() {
+    var fb = FloatBoxPanel(
+      panelDirect: Axis.vertical,
+      backgroundColor: Color(0xFF222222),
+      panelShape: PanelShape.rectangle,
+      borderRadius: BorderRadius.circular(8.0),
+      onPressed: (index) {
+        print("Clicked on item: $index");
+      },
+      buttons: [
+        // Add Icons to the buttons list.
+        Icons.message,
+        Icons.photo_camera,
+        Icons.video_library
+      ],
+    );
+    return fb;
+  }
+
+  Widget buildbottomMenu() {
+    var fb = FloatBoxPanel(
+      panelDirect: Axis.horizontal,
+      backgroundColor: Color(0xFF222222),
+      panelShape: PanelShape.rectangle,
+      borderRadius: BorderRadius.circular(8.0),
+      onPressed: (index) {
+        print("Clicked on item: $index");
+      },
+      buttons: [
+        // Add Icons to the buttons list.
+        Icons.message,
+        Icons.photo_camera,
+        Icons.video_library
+      ],
+    );
+    return fb;
   }
 
   String printKeysPressed(Set<LogicalKeyboardKey> keys) {

@@ -208,3 +208,13 @@ https://www.jianshu.com/p/e201f6b764f8
 
 3,flutter-redux
 https://www.jianshu.com/p/216e340ac63a?utm_campaign=maleskine
+
+
+
+# float_menu
+https://github.com/akshayejh/floating_panel/blob/master/lib/floatingpanel.dart
+
+widget flex(column,row)
+
+# widget 大小
+https://blog.csdn.net/studying_ios/article/details/108870555
