@@ -130,27 +130,54 @@ class _RootItemState extends State<RootItemWidget> {
           }),
         ));
 
-    var editbox = GestureDetector(
+    var _editbox = GestureDetector(
       onDoubleTap: () {
         FocusScope.of(context).requestFocus(_itemnode);
         // _itemnode.requestFocus();
-        print('onDoubleTap');
+        print('onDoubleTap11111111111111');
+        setState(() {
+          _mode = itemMode.edit;
+        });
       },
-      child: Container(
-        padding: EdgeInsets.all(2.0),
-        constraints: BoxConstraints(
-          maxHeight: 200.0,
-          minHeight: 50.0,
-          minWidth: 100.0,
-          maxWidth: 300.0,
+      onTap: () {
+        print('object fuck');
+      },
+      child: IntrinsicWidth(
+        stepWidth: 20,
+        child: Container(
+          // color: Colors.blueGrey[100],
+          padding: EdgeInsets.all(2.0),
+          decoration: new BoxDecoration(
+            // border: buildBorder(),
+            color: Colors.blueGrey[100],
+            borderRadius: new BorderRadius.all(new Radius.circular(5.0)),
+          ),
+          constraints: BoxConstraints(
+            maxHeight: 200.0,
+            minHeight: 10.0,
+            minWidth: 10.0,
+            maxWidth: 200.0,
+          ),
+          child: EditableText(
+              onSelectionHandleTapped: () {
+                print('object fuck');
+              },
+              onEditingComplete: () {
+                print('onEditingComplete fuck');
+                // setState(() {
+                //   _mode = itemMode.view;
+                // });
+              },
+              textAlign: TextAlign.center,
+              autofocus: true,
+              readOnly: false,
+              maxLines: null,
+              controller: _txtControl,
+              focusNode: _itemnode,
+              style: TextStyle(fontSize: 20),
+              cursorColor: Colors.black,
+              backgroundCursorColor: Colors.transparent),
         ),
-        child: EditableText(
-            autofocus: true,
-            controller: _txtControl,
-            focusNode: _itemnode,
-            style: TextStyle(fontSize: 20),
-            cursorColor: Colors.black,
-            backgroundCursorColor: Colors.transparent),
       ),
     );
 
@@ -158,7 +185,7 @@ class _RootItemState extends State<RootItemWidget> {
 
     var _stack = Row(
       children: [
-        editbox,
+        _editbox,
         _rootLine,
         _btn,
       ],

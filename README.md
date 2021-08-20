@@ -218,3 +218,9 @@ widget flex(column,row)
 
 # widget 大小
 https://blog.csdn.net/studying_ios/article/details/108870555
+
+
+# 复制
+https://pub.flutter-io.cn/packages/clipboard
+clipboard
+
