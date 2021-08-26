@@ -23,11 +23,7 @@
 | dragItem      | ✔   | ctrl + v          | ✔     | ✔      | 粘贴 | 
 | copyItem      | ✔   | ctrl + v          | ✔     | ✔      | 粘贴 | 
 | pasteItem      | ✔   | ctrl + v          | ✔     | ✔      | 粘贴 | 
-
 | Tree mode     | ✔   | ctrl + v          | ✔     | ✔      | 粘贴 | 
-
-
-
 | move mode     | ✔   | ctrl + mouse wheel +          | ✔     | ✔      | 放大 |
 | zoomIn     | ✔   | ctrl + mouse wheel +          | ✔     | ✔      | 放大 |
 | zoomOut    | ✔   | ctrl + mouse wheel -          | ✔     | ✔      | 缩小 |
@@ -39,9 +35,7 @@
 | right      | ✔   | right             | ✖     | ✖      | 右 |
 | undo       | ✔   | ctrl + z          | ✔     | ✔      | 撤销 | 
 | redo       | ✔   | ctrl + shift + z  | ✔     | ✔      | 重做 | 
-
 | save      | ✔   | right             | ✖     | ✖      | 右 |
 | load      | ✔   | right             | ✖     | ✖      | 右 |
-
 | select mutil Items    | ✔   | mouse selcect          | ✔     | ✔      | 复制 | 
 | left menu   | ✔   | mouse selcect          | ✔     | ✔      | 复制 | 
