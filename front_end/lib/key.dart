@@ -10,7 +10,9 @@ import 'dart:html' as html;
 
 import 'compent/root.dart';
 import 'main_menu.dart';
+import 'mock/data.dart';
 import 'model/app_state.dart';
+import 'model/node.dart';
 import 'widgets/float_menu.dart';
 
 void main() async {
@@ -74,6 +76,7 @@ class _ShortcutTestState extends State<ShortcutTest> {
     _rootNode.requestFocus();
   }
 
+  var _data = root_data;
   double _left_dx = 0.0;
   double _left_dy = 0.0;
 
@@ -228,6 +231,29 @@ class _ShortcutTestState extends State<ShortcutTest> {
       itemModel: item,
     );
     return root;
+  }
+
+  List<Widget> buildRoots() {
+    var a1 = Positioned(
+      child: Transform(
+          transform: Matrix4.identity()
+            ..translate(_dx, _dy)
+            ..scale(_scale, _scale),
+          child: buildRoot()),
+      left: 400,
+      top: 400,
+    );
+    var a2 = Positioned(
+      child: Transform(
+          transform: Matrix4.identity()
+            ..translate(_dx, _dy)
+            ..scale(_scale, _scale),
+          child: buildRoot()),
+      left: 400,
+      top: 200,
+    );
+
+    return [a1, a2];
   }
 
   Widget buildleftMenu() {
