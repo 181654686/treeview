@@ -98,6 +98,20 @@ class _ShortcutTestState extends State<ShortcutTest> {
     double _previousScale;
     double _pageWidth = MediaQuery.of(context).size.width;
     double _pageHeight = MediaQuery.of(context).size.height;
+    List<Widget> stack_child = new List();
+
+    Widget lis = buildRoot_mouselisten();
+    Widget left_menu = buildRoot_leftMenu();
+    Widget select_rect = buidRoot_select_rectangle();
+    Widget menu_left = buildRoot_menu_left();
+    Widget menu_bottom = buildRoot_menu_bottom(_pageWidth, _pageHeight);
+    Widget main_tree = buildroot_tree();
+    stack_child.add(lis);
+    stack_child.add(left_menu);
+    stack_child.add(select_rect);
+    stack_child.add(menu_left);
+    stack_child.add(menu_bottom);
+    stack_child.add(main_tree);
 
     return RawKeyboardListener(
       autofocus: false,
@@ -118,109 +132,126 @@ class _ShortcutTestState extends State<ShortcutTest> {
       child: Scaffold(
         backgroundColor: Color.fromARGB(255, 240, 244, 247),
         body: Stack(
-          children: [
-            Listener(
-              onPointerDown: (event) {
-                print('onPointerDown');
-                FocusScope.of(context).requestFocus(_rootNode);
-                print(event.buttons);
-                if (event.buttons == 1) {
-                  _mode = mode_status.select;
-                  start_dx = event.position.dx;
-                  start_dy = event.position.dy;
-                  end_dx = event.position.dx - start_dx;
-                  end_dy = event.position.dy - start_dy;
-                  setState(() {});
-                } else {
-                  print('----');
-                  _mode = mode_status.menu;
-                  _menu = menu_status.main;
-                  _left_dx = event.position.dx;
-                  _left_dy = event.position.dy;
-                  setState(() {});
-                }
-              },
-              onPointerMove: (event) {
-                if (_mode == mode_status.select) {
-                  end_dx = event.position.dx - start_dx;
-                  end_dy = event.position.dy - start_dy;
-                  setState(() {});
-                }
-                print('onPointerMove');
-              },
-              onPointerUp: (event) {
-                print('onPointerUp');
-                if (_mode == mode_status.menu) return;
-                _mode = mode_status.view;
-                setState(() {});
-              },
-              onPointerSignal: (event) {
-                if (event is PointerScrollEvent) {
-                  // print('x: ${event.position.dx}, y: ${event.position.dy}');
-                  // print('scroll delta: ${event.scrollDelta.dy}');
-
-                  setState(() {
-                    if (_key == '') {
-                      _dy = _dy + event.scrollDelta.dy / 5;
-                      print(_dy);
-                    }
-                    if (_key.toLowerCase() == 'control left') {
-                      if (event.scrollDelta.dy < 0) {
-                        _scale = _scale * 1.1;
-                        print(_scale);
-                      } else {
-                        _scale = _scale / 1.1;
-                        print(_scale);
-                      }
-                    }
-                  });
-                }
-              },
-              onPointerHover: (event) => {print('onPointerHover')},
-              child: Container(
-                width: double.infinity,
-                height: double.infinity,
-                color: Colors.transparent,
-                child: Container(),
-              ),
-            ),
-            Positioned(
-                left: _left_dx,
-                top: _left_dy,
-                child: Visibility(
-                  visible: _mode == mode_status.menu,
-                  child: mymenu(),
-                )),
-            Positioned(
-                left: start_dx,
-                top: start_dy,
-                child: Visibility(
-                    visible: _mode == mode_status.select,
-                    child: select_rect(
-                        size: Size(double.maxFinite, double.maxFinite),
-                        dx: end_dx,
-                        dy: end_dy))),
-            Positioned(
-              child: Transform(
-                  transform: Matrix4.identity()
-                    ..translate(_dx, _dy)
-                    ..scale(_scale, _scale),
-                  child: buildRoot()),
-              left: 400,
-              top: 400,
-            ),
-            Positioned(
-              child: buildleftMenu(),
-              left: 0,
-              top: 20,
-            ),
-            Positioned(
-              child: buildbottomMenu(),
-              left: _pageWidth - 220,
-              top: _pageHeight - 70,
-            )
-          ],
+          children: stack_child,
         ),
+      ),
+    );
+  }
+
+  Widget buildroot_tree() {
+    return Positioned(
+      child: Transform(
+          transform: Matrix4.identity()
+            ..translate(_dx, _dy)
+            ..scale(_scale, _scale),
+          child: buildRoot()),
+      left: 400,
+      top: 400,
+    );
+  }
+
+  Widget buildRoot_menu_bottom(_pageWidth, _pageHeight) {
+    return Positioned(
+      child: buildbottomMenu(),
+      left: _pageWidth - 220,
+      top: _pageHeight - 70,
+    );
+  }
+
+  Widget buildRoot_menu_left() {
+    return Positioned(
+      child: buildleftMenu(),
+      left: 0,
+      top: 20,
+    );
+  }
+
+  Widget buidRoot_select_rectangle() {
+    return Positioned(
+        left: start_dx,
+        top: start_dy,
+        child: Visibility(
+            visible: _mode == mode_status.select,
+            child: select_rect(
+                size: Size(double.maxFinite, double.maxFinite),
+                dx: end_dx,
+                dy: end_dy)));
+  }
+
+  Widget buildRoot_leftMenu() {
+    return Positioned(
+        left: _left_dx,
+        top: _left_dy,
+        child: Visibility(
+          visible: _mode == mode_status.menu,
+          child: mymenu(),
+        ));
+  }
+
+  Widget buildRoot_mouselisten() {
+    return Listener(
+      onPointerDown: (event) {
+        print('onPointerDown');
+        FocusScope.of(context).requestFocus(_rootNode);
+        print(event.buttons);
+        if (event.buttons == 1) {
+          _mode = mode_status.select;
+          start_dx = event.position.dx;
+          start_dy = event.position.dy;
+          end_dx = event.position.dx - start_dx;
+          end_dy = event.position.dy - start_dy;
+          setState(() {});
+        } else {
+          print('----');
+          _mode = mode_status.menu;
+          _menu = menu_status.main;
+          _left_dx = event.position.dx;
+          _left_dy = event.position.dy;
+          setState(() {});
+        }
+      },
+      onPointerMove: (event) {
+        if (_mode == mode_status.select) {
+          end_dx = event.position.dx - start_dx;
+          end_dy = event.position.dy - start_dy;
+          setState(() {});
+        }
+        print('onPointerMove');
+      },
+      onPointerUp: (event) {
+        print('onPointerUp');
+        if (_mode == mode_status.menu) return;
+        _mode = mode_status.view;
+        setState(() {});
+      },
+      onPointerSignal: (event) {
+        if (event is PointerScrollEvent) {
+          // print('x: ${event.position.dx}, y: ${event.position.dy}');
+          // print('scroll delta: ${event.scrollDelta.dy}');
+
+          setState(() {
+            if (_key == '') {
+              _dy = _dy + event.scrollDelta.dy / 5;
+              print(_dy);
+            }
+            if (_key.toLowerCase() == 'control left') {
+              if (event.scrollDelta.dy < 0) {
+                _scale = _scale * 1.1;
+                print(_scale);
+              } else {
+                _scale = _scale / 1.1;
+                print(_scale);
+              }
+            }
+          });
+        }
+      },
+      onPointerHover: (event) => {print('onPointerHover')},
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: Colors.transparent,
+        child: Container(),
       ),
     );
   }
