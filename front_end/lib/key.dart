@@ -12,7 +12,7 @@ import 'compent/root.dart';
 import 'main_menu.dart';
 import 'mock/data.dart';
 import 'model/app_state.dart';
-import 'model/node.dart';
+
 import 'widgets/float_menu.dart';
 
 void main() async {
@@ -91,27 +91,29 @@ class _ShortcutTestState extends State<ShortcutTest> {
   String _key = '';
   menu_status _menu = menu_status.none;
   var _mode = mode_status.view;
-  TextEditingController _controller = new TextEditingController();
+
   FocusNode _rootNode = FocusNode();
+  List<Widget> stack_child = new List();
   @override
   Widget build(BuildContext context) {
     double _previousScale;
     double _pageWidth = MediaQuery.of(context).size.width;
     double _pageHeight = MediaQuery.of(context).size.height;
-    List<Widget> stack_child = new List();
-
+    stack_child = new List();
     Widget lis = buildRoot_mouselisten();
     Widget left_menu = buildRoot_leftMenu();
     Widget select_rect = buidRoot_select_rectangle();
     Widget menu_left = buildRoot_menu_left();
     Widget menu_bottom = buildRoot_menu_bottom(_pageWidth, _pageHeight);
-    Widget main_tree = buildroot_tree();
+    List<Widget> main_tree = buildroot_tree();
     stack_child.add(lis);
     stack_child.add(left_menu);
     stack_child.add(select_rect);
     stack_child.add(menu_left);
     stack_child.add(menu_bottom);
-    stack_child.add(main_tree);
+    for (var item in main_tree) {
+      stack_child.add(item);
+    }
 
     return RawKeyboardListener(
       autofocus: false,
@@ -138,16 +140,28 @@ class _ShortcutTestState extends State<ShortcutTest> {
     );
   }
 
-  Widget buildroot_tree() {
-    return Positioned(
-      child: Transform(
-          transform: Matrix4.identity()
-            ..translate(_dx, _dy)
-            ..scale(_scale, _scale),
-          child: buildRoot()),
-      left: 400,
-      top: 400,
-    );
+  int num = 2;
+  List<Widget> buildroot_tree() {
+    List<Widget> widgets = new List();
+
+    // for (var i = 0.0; i < num; i++) {
+    //   double y = i * 200;
+    //   var a = Positioned(
+    //     child: Transform(
+    //         transform: Matrix4.identity()
+    //           ..translate(_dx, _dy)
+    //           ..scale(_scale, _scale),
+    //         child: buildRoot()),
+    //     left: 400,
+    //     top: y,
+    //   );
+    //   widgets.add(a);
+    // }
+    root_data.forEach((key, value) {
+      print(key);
+      print(value);
+    });
+    return widgets;
   }
 
   Widget buildRoot_menu_bottom(_pageWidth, _pageHeight) {
@@ -295,6 +309,8 @@ class _ShortcutTestState extends State<ShortcutTest> {
       borderRadius: BorderRadius.circular(8.0),
       onPressed: (index) {
         print("Clicked on item: $index");
+        num++;
+        setState(() {});
       },
       buttons: [
         // Add Icons to the buttons list.
